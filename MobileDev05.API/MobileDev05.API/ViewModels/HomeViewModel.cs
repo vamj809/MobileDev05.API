@@ -1,6 +1,8 @@
-﻿using MobileDev05.API.Services;
+﻿using MobileDev05.API.Models;
+using MobileDev05.API.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -11,8 +13,9 @@ namespace MobileDev05.API.ViewModels
     public class HomeViewModel : BaseViewModel
     {
         public string SearchString { get; set; }
+        public ObservableCollection<RecipeHits> RecipesCollection { get; set; }
 
-        public ICommand SearchCommand;
+        public ICommand SearchCommand { get; }
         private IRecipesApiService _recipeApiService;
         public HomeViewModel()
         {
@@ -30,7 +33,7 @@ namespace MobileDev05.API.ViewModels
                 await App.Current.MainPage.DisplayAlert("Advertencia", "Debe estar conectado a internet para acceder a nuestros datos", "OK");
             } else
             {
-                await _recipeApiService.GetRecipesAsync(SearchString);
+                RecipesCollection = await _recipeApiService.GetRecipesAsync(SearchString);
             }
         }
     }

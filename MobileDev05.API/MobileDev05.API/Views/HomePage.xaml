@@ -8,8 +8,16 @@
                 <Label Text="Welcome to Pocket Recipes!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
             </Frame>
             <Entry Text="{Binding SearchString}" Placeholder="Search for your favorite recipe..."/>
-            <Button Text="Buscar" Command="{Binding SearchCommand}"/>
-            <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
+            <Button Text="Search" Command="{Binding SearchCommand}"/>
+            <ListView ItemsSource="{Binding RecipesCollection}" Margin="20" VerticalOptions="FillAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ImageCell ImageSource="{Binding Recipe.Image}" 
+                                   Text="{Binding Recipe.Label}" 
+                                   Detail="{Binding Recipe.Url}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

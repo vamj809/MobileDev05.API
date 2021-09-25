@@ -1,6 +1,7 @@
 ﻿using MobileDev05.API.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,16 +22,16 @@ namespace MobileDev05.API.Services
                 BaseAddress = new Uri("https://api.edamam.com/api/recipes/v2")
             };
         }
-        public async Task<Recipe> GetRecipesAsync(string query)
+        public async Task<ObservableCollection<RecipeHits>> GetRecipesAsync(string query)
         {
             HttpResponseMessage response = await _httpClient.GetAsync($"?type=public&app_id={ApiApplicationID}&app_key={ApiAccessKey}&q={query}&field=label&field=image&field=url");
 
             if (response.IsSuccessStatusCode)
             {
                 string responseString = await response.Content.ReadAsStringAsync();
-                Recipe recipeResponse = serializer.Deserialize<Recipe>(responseString);
+                RecipeSearchResults recipeResponse = serializer.Deserialize<RecipeSearchResults>(responseString);
 
-                return recipeResponse;
+                return recipeResponse.Hits;
             }
 
             return null;
